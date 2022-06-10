@@ -1,9 +1,9 @@
 const searchBtn = document.getElementById("searchBtn");
 const citySearchBox = document.getElementById("citySearchBox");
-let weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=Chicago&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial";
+let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Chicago&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial";
 
 searchBtn.addEventListener("click", () => {
-    weatherURL = `http://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
+    weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
     console.log(weatherURL);
     getWeather();
 });
@@ -11,7 +11,7 @@ searchBtn.addEventListener("click", () => {
 citySearchBox.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
-        weatherURL = `http://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
+        weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
         console.log(weatherURL);
         getWeather();
     }
@@ -43,7 +43,6 @@ let tempDisplay = document.createElement("p");
 weatherDisplayArea.appendChild(loadingMsg);
 
 const displayWeather = (weatherDisplayObj) => {
-    console.log(weatherDisplayObj);
     cityDisplay.textContent = weatherDisplayObj.name;
     weatherDisplayArea.appendChild(cityDisplay);
 
