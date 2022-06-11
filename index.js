@@ -1,64 +1,77 @@
 const searchBtn = document.getElementById("searchBtn");
 const citySearchBox = document.getElementById("citySearchBox");
+const unitButton = document.getElementById("unitSelector");
+let currentUnit = "fahrenheit";
 let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Chicago&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial";
 
 searchBtn.addEventListener("click", () => {
     weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
-    console.log(weatherURL);
     getWeather();
+    citySearchBox.value = "";
 });
 
 citySearchBox.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
         weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${citySearchBox.value}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
-        console.log(weatherURL);
         getWeather();
+        citySearchBox.value = "";
     }
 });
 
 let loadingMsg = document.createElement("p");
 
 async function getWeather() {
-    loadingMsg.textContent = "Loading...";
-    const retrievedWeather = await fetch(weatherURL, { mode: 'cors' });
-    const weatherData = await retrievedWeather.json();
-    const weatherDisplayObj = {
-        name: weatherData.name,
-        description: weatherData.weather[0].description,
-        wind: weatherData.wind.speed,
-        humidity: weatherData.main.humidity,
-        temp: weatherData.main.temp
+    try {
+        loadingMsg.textContent = "Loading...";
+        const retrievedWeather = await fetch(weatherURL, { mode: 'cors' });
+        const weatherData = await retrievedWeather.json();
+        const weatherDisplayObj = {
+            name: weatherData.name,
+            description: weatherData.weather[0].description,
+            wind: weatherData.wind.speed,
+            humidity: weatherData.main.humidity,
+            temp: weatherData.main.temp,
+            iconID: weatherData.weather[0].icon
+        }
+        loadingMsg.textContent = "";
+        displayWeather(weatherDisplayObj);
+    } catch(err) {
+        console.log(err);
+        alert("No City By That Name Found!");
     }
-    loadingMsg.textContent="";
-    displayWeather(weatherDisplayObj);
+
 }
 
 const weatherDisplayArea = document.getElementById("weatherDisplayArea");
-let cityDisplay = document.createElement("h1");
-let descriptionDisplay = document.createElement("p");
-let windDisplay = document.createElement("p");
-let humidityDisplay = document.createElement("p");
-let tempDisplay = document.createElement("p");
 weatherDisplayArea.appendChild(loadingMsg);
+let cityDisplay = document.getElementById("cityDisplay");
+let descriptionDisplay = document.getElementById("descriptionDisplay");
+let windDisplay = document.getElementById("windDisplay");
+let humidityDisplay = document.getElementById("humidityDisplay");
+let tempDisplay = document.getElementById("tempDisplay");
+
+let conditionsImg = document.getElementById("conditionsImg");
 
 const displayWeather = (weatherDisplayObj) => {
     cityDisplay.textContent = weatherDisplayObj.name;
-    weatherDisplayArea.appendChild(cityDisplay);
-
-    descriptionDisplay.textContent = weatherDisplayObj.description;
-    weatherDisplayArea.appendChild(descriptionDisplay);
-
-    windDisplay.textContent = weatherDisplayObj.wind;
-    weatherDisplayArea.appendChild(windDisplay);
-
-    humidityDisplay.textContent = weatherDisplayObj.humidity;
-    weatherDisplayArea.appendChild(humidityDisplay);
-
-    tempDisplay.textContent = weatherDisplayObj.temp;
-    weatherDisplayArea.appendChild(tempDisplay);
-
+    tempDisplay.textContent = weatherDisplayObj.temp + "°";
+    descriptionDisplay.textContent = "Conditions: " + weatherDisplayObj.description.toUpperCase();
+    conditionsImg.setAttribute("src", `http://openweathermap.org/img/wn/${weatherDisplayObj.iconID}@2x.png`);
+    windDisplay.textContent = "Wind: " + weatherDisplayObj.wind + " mph";
+    humidityDisplay.textContent = "Humidity: " + weatherDisplayObj.humidity + "%";
 }
 
-getWeather();
+unitButton.addEventListener("click", () => {
+    if (currentUnit === "fahrenheit") {
+        currentUnit = "celcius";
+        weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityDisplay.textContent}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=metric`;
+        getWeather();
+    } else if (currentUnit === "celcius") {
+        currentUnit = "fahrenheit";
+        weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityDisplay.textContent}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
+        getWeather();
+    }
+});
 
+getWeather();

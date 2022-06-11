@@ -31,3 +31,34 @@ body {
     width: 350px;
     margin-top: 50px;
 }
+
+#searchBtn {
+    width: 30px;
+    height: 30px;
+    opacity: 0.5;
+    border-radius: 100%;
+    padding-top: 10px;
+}
+
+#searchBtn:hover {
+    opacity: 1.0;
+    cursor: pointer;
+}
+
+#citySearchBox {
+    opacity: 0.9;
+}
+
+#unitSelector {
+    width: 50px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 15px;
+    border: none;
+    background-color: #ffffff87;
+    margin: 5px;
+}
+
+#unitSelector:hover {
+    background-color: white;
+    cursor: pointer;
+}
