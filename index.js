@@ -41,6 +41,7 @@ async function getWeather() {
     } catch(err) {
         console.log(err);
         alert("No City By That Name Found!");
+        loadingMsg.textContent="";
     }
 
 }
