@@ -2,6 +2,8 @@ const searchBtn = document.getElementById("searchBtn");
 const citySearchBox = document.getElementById("citySearchBox");
 const unitButton = document.getElementById("unitSelector");
 let currentUnit = "fahrenheit";
+let currentDegrees = "F";
+let currentSpeedUnit ="MPH";
 let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Chicago&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial";
 
 searchBtn.addEventListener("click", () => {
@@ -55,10 +57,10 @@ let conditionsImg = document.getElementById("conditionsImg");
 
 const displayWeather = (weatherDisplayObj) => {
     cityDisplay.textContent = weatherDisplayObj.name;
-    tempDisplay.textContent = weatherDisplayObj.temp + "°";
+    tempDisplay.textContent = weatherDisplayObj.temp + "° " + currentDegrees;
     descriptionDisplay.textContent = "Conditions: " + weatherDisplayObj.description.toUpperCase();
     conditionsImg.setAttribute("src", `http://openweathermap.org/img/wn/${weatherDisplayObj.iconID}@2x.png`);
-    windDisplay.textContent = "Wind: " + weatherDisplayObj.wind + " mph";
+    windDisplay.textContent = "Wind: " + weatherDisplayObj.wind + " " + currentSpeedUnit;
     humidityDisplay.textContent = "Humidity: " + weatherDisplayObj.humidity + "%";
 }
 
@@ -66,10 +68,14 @@ unitButton.addEventListener("click", () => {
     if (currentUnit === "fahrenheit") {
         currentUnit = "celcius";
         weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityDisplay.textContent}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=metric`;
+        currentDegrees = "C";
+        currentSpeedUnit = "KPH";
         getWeather();
     } else if (currentUnit === "celcius") {
         currentUnit = "fahrenheit";
         weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityDisplay.textContent}&APPID=9292826a5becd0c5c9bf703ff97079b6&units=imperial`;
+        currentDegrees = "F";
+        currentSpeedUnit = "MPH";
         getWeather();
     }
 });
